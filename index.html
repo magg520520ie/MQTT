@@ -1,0 +1,77 @@
+<!doctype <!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>MQTT</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <div class="input-group 1">
+        主題：
+        <input type="text" id="txtSubTopcic">
+        <input type="button" id="btnSub" value="Subscribe" onclick="subTopic()">
+    </div>
+    <hr>
+    <div class="input-group 2">
+        主題：
+        <input type="text" id="txtPubTopcic">
+        <p></p>
+        訊息：
+        <input type="text" id="txtPubTopcic">
+        <input type="button" id="btnPub" value="Send" onclick="pubTopic()">
+    </div>
+    <hr>
+    訊息列：
+    <div id=info style="background-color:lightblue"></div>
+
+    
+</body>
+
+</html>
+<script>
+    // Create a client instance
+    client = new Paho.MQTT.Client("wss://iot.eclipse.org:443/ws", "iphoneXiphone8iphone7");
+
+    // set callback handlers
+    client.onConnectionLost = onConnectionLost;
+    client.onMessageArrived = onMessageArrived;
+
+    // connect the client
+    client.connect({ onSuccess: onConnect });
+
+
+    // called when the client connects
+    function onConnect() {
+        // Once a connection has been made, make a subscription and send a message.
+        console.log("onConnect");
+        client.subscribe("tw/iot/0302");
+        message = new Paho.MQTT.Message("Hello, My Lord");
+        message.destinationName = "tw/iot/0302";
+        client.send(message);
+    }
+
+    // called when the client loses its connection
+    function onConnectionLost(responseObject) {
+        if (responseObject.errorCode !== 0) {
+            console.log("onConnectionLost:" + responseObject.errorMessage);
+        }
+    }
+
+    // called when a message arrives
+    function onMessageArrived(message) {
+        console.log("onMessageArrived:" + message.payloadString);
+    }
+    
+    function subTopic()
+    {
+        alert("abc")
+    }
+
+    function pubTopic()
+    {
+        alert("abc")
+    }
+</script>
